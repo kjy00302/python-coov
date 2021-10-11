@@ -1,0 +1,4 @@
+cryptography>=35.0.0
+jwcrypto>=1.0
+python-socketio>=5.4.0
+qrcode>=7.3.1
