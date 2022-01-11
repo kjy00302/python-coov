@@ -59,7 +59,7 @@ def on_msg(data):
                 'from': sio.get_sid(),
                 'vp': vp,
                 'user': {'dob': has_dob, 'name': has_name},
-                'type':'user'
+                'type':vp_type
             }
         )
 
