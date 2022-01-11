@@ -3,6 +3,8 @@ from jwcrypto import jwt, jwk
 from jwcrypto.common import json_decode
 import time
 
+def diduri_split(did):
+    return did_strip(did).split('/')
 
 def did_valid(did: str):
     return True if did.startswith('did:infra:') else False

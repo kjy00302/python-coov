@@ -40,15 +40,17 @@ config['Key']['public'] = pubkey
 config['Key']['token'] = token 
 
 
-vc_personal = coov_api.getvc(token, vc_util.did_append(pubkey), 'personal')
+vc_personal = coov_api.getvc_v1(token, vc_util.did_append(pubkey), 'personal')
 for vc in vc_personal:
     config['VC'][vc['type']] = vc['vc']
 
-vc_covid = coov_api.getvc(token, vc_util.did_append(pubkey), 'covid19')
-for vc in vc_covid:
-    vaccine = vc_util.vc_verify(vc['vc'])['vc']['credentialSubject']['vaccine']
-    dose = vc_util.vc_verify(vc['vc'])['vc']['credentialSubject']['doseNum']
-    config['VC'][f'{vaccine}_{dose}'] = vc['vc']
+coov_api.resetvc_vaccine(token)
+vc_vaccine = coov_api.getvc_vaccine(token, vc_util.did_append(pubkey))['VCs']
+for vc in vc_vaccine:
+    vaccine_vc_cs = vc_util.vc_verify(vc)['vc']['credentialSubject']
+    vaccine = vaccine_vc_cs['vaccine']
+    dose = vaccine_vc_cs['doseNum']
+    config['VC'][f'{vaccine}_{dose}'] = vc
 
 with open('coov.ini', 'w') as f:
     config.write(f)

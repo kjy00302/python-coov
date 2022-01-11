@@ -20,7 +20,7 @@ if not vc_util.did_valid(sys.argv[1]):
 key_pub = eoskey.eos_keygen()[1]
 key_nonce = eoskey.eos_keygen()[1]
 
-responder_session_id = vc_util.did_strip(sys.argv[1])
+url, servernum, responder_session_id = vc_util.diduri_split(sys.argv[1])
 
 sio = socketio.Client()
 
@@ -32,7 +32,7 @@ resp_timeout = threading.Timer(5, timeout)
 
 def send_data(to, data):
     sio.emit('send', {
-        'to': to,
+        'to': f'{servernum}/'+to,
         'data': data
     })
 
@@ -60,7 +60,7 @@ def on_msg(data):
         resp_timeout.cancel()
         sio.disconnect()
 
-sio.connect('https://wss.coov.io/', transports="websocket")
+sio.connect(f'https://{url.replace("wss", f"wss-{servernum}")}', transports="websocket")
 
 send_data(
     responder_session_id,

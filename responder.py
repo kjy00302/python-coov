@@ -59,7 +59,8 @@ def on_msg(data):
                 'from': sio.get_sid(),
                 'vp': vp,
                 'user': {'dob': has_dob, 'name': has_name},
-                'type':vp_type
+                'type':vp_type,
+                'hasPassport': False
             }
         )
 
@@ -69,10 +70,9 @@ def send_data(to, data):
         'data': data
     })
 
-
 @sio.event
 def connect():
-    sid_uri = f'did:infra:{sio.get_sid()}'
+    sid_uri = f'did:infra:vp:wss.coov.io/{sio.get_sid()}'
     if QR_CODE:
         import qrcode
         qr = qrcode.QRCode()
