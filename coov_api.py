@@ -42,3 +42,11 @@ def checktoken(token):
     if resp.json()['messageCode'] == 'Success':
         return True
     return False
+
+def getkipass(token, endpoint):
+    resp = requests.post(
+        'https://kipass.coov.io/v1/kipass/issueCheckInQRCode',
+        json={'enp': endpoint},
+        headers={'authorization': f'Bearer {token}'}
+    ).json()
+    return resp['qrCode']

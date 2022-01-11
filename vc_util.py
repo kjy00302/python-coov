@@ -27,26 +27,33 @@ def vc_verify(data, check_issuer=None, check_subject=None):
         assert check_subject == payload['sub']
     return payload 
 
-def makevp(key_priv_eos, audience_dids, nonce, vc):
+def makevp(key_priv_eos, audience_dids, nonce, vc, expire=60):
     key_priv = eoskey.eos_to_pyca(key_priv_eos)
     key_pub = eoskey.eos_from_pyca(key_priv.public_key())
+    claims = {
+        'vp': {
+            '@context': [
+            'https://www.w3.org/2018/credentials/v1'
+            ],
+            'type': [
+            'VerifiablePresentation'
+            ],
+            'verifiableCredential': vc
+        },
+        'nbf': int(time.time()),
+        'iss': did_append(key_pub),
+        'nonce': nonce
+    }
+
+    if expire:
+        claims.update(exp=int(time.time())+expire)
+
+    if audience_dids:
+        claims.update(aud=audience_dids)
+
     token = jwt.JWT(
         header={'typ': 'JWT', 'alg': 'ES256K'},
-        claims={
-            'exp': int(time.time())+60,
-            'vp': {
-                '@context': [
-                'https://www.w3.org/2018/credentials/v1'
-                ],
-                'type': [
-                'VerifiablePresentation'
-                ],
-                'verifiableCredential': vc
-            },
-            'nbf': int(time.time()),
-            'iss': did_append(key_pub),
-            'aud': audience_dids,
-            'nonce': nonce
-    })
+        claims=claims
+    )
     token.make_signed_token(jwk.JWK.from_pyca(key_priv))
     return token.serialize()

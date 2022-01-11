@@ -48,6 +48,14 @@ caller.py를 통해 증명서를 읽을 수 있다. 5초 안으로 응답이 없
 
     caller.py `zbarcam --raw -1`
 
+## QR 체크인 코드 발급
+
+kipass.py로 QR 체크인에 쓰이는 코드를 발급 받을 수 있다. 15초 안으로 요청이 없으면 자동으로 종료된다.
+
+### 사용 방법
+
+    kipass.py
+
 ## 사용한 라이브러리
 
  - [cryptography](https://github.com/pyca/cryptography)
