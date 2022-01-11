@@ -54,3 +54,4 @@ caller.py를 통해 증명서를 읽을 수 있다. 5초 안으로 응답이 없
  - [jwcrypto](https://github.com/latchset/jwcrypto)
  - [python-socketio](https://github.com/miguelgrinberg/python-socketio)
  - [qrcode](https://github.com/lincolnloop/python-qrcode)
+ - [requests](https://github.com/psf/requests)

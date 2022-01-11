@@ -1,4 +1,6 @@
+wheel>=0.30.0
+requests>=2.0.0
 cryptography>=35.0.0
 jwcrypto>=1.0
-python-socketio>=5.4.0
+python-socketio[client]>=5.4.0
 qrcode>=7.3.1
